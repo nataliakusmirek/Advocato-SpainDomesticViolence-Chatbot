@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, LSTM, Embedding, TextVectorization
-from tensorflow.keras.losses import BinaryCrossentropy
 import pandas as pd
 from googletrans import Translator
 
@@ -22,12 +21,13 @@ class Chatbot:
         """
         super().__init__()
         self.max_length = max_length
-        self.vectorizer = tf.keras.layers.TextVectorization(max_tokens=vocab_size, output_sequence_length=max_length)
-        self.model = self.build_model(vocab_size, max_length)
+        self.vocab_size = vocab_size
+        self.vectorizer = TextVectorization(max_tokens=vocab_size, output_sequence_length=max_length)
+        self.model = self.build_model(vocab_size)
         self.translator = Translator()
 
 
-    def build_model(self, vocab_size, max_length):
+    def build_model(self, vocab_size):
         """
         Build the model.
 
@@ -41,10 +41,9 @@ class Chatbot:
 
         """
         model = Sequential([
-            Embedding(input_dim=vocab_size, output_dim=64, input_length=max_length),
+            Embedding(input_dim=vocab_size, output_dim=64, mask_zero=True),
             LSTM(128, return_sequences=True),
-            LSTM(128),
-            Dense(128, activation='relu'),
+            LSTM(128, return_sequences=True),
             Dense(vocab_size, activation='softmax')
         ])
         model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -67,54 +66,48 @@ class Chatbot:
         self.vectorizer.adapt(data)
 
 
-    def load_data():
+    def load_data(self):
         """
         Load the data from the files.
 
         Args:
-        None
+        self: instance of the class
 
         Returns:
-        pd.DataFrame, general definitions
-        pd.DataFrame, form data
-        pd.DataFrame, violence definitions
-        pd.DataFrame, survey data
+        tuple: (general_definitions, english_form_data, spanish_form_data, violence_definitions)
             
         """
         # Note: survey data was already cleaned and null values removed before access was granted
         
-        with open('definitions.txt', 'r', encoding='utf-8') as file:
+        with open('training_sets/definitions.txt', 'r', encoding='utf-8') as file:
             general_definitions = file.readlines()
 
-        with open('english_form.txt', 'r', encoding='utf-8') as file:
+        with open('training_sets/english_form.txt', 'r', encoding='utf-8') as file:
             english_form_data = file.readlines()
         
-        with open('spanish_form.txt', 'r', encoding='utf-8') as file:
+        with open('training_sets/spanish_form.txt', 'r', encoding='utf-8') as file:
             spanish_form_data = file.readlines()
         
-        with open('violence_definitions.txt', 'r', encoding='utf-8') as file:
+        with open('training_sets/violence_definitions.txt', 'r', encoding='utf-8') as file:
             violence_definitions = file.readlines()
         
-        survey_data = pd.read_csv('survey.csv')
-
-        return general_definitions, english_form_data, spanish_form_data, violence_definitions, survey_data
+        return general_definitions, english_form_data, spanish_form_data, violence_definitions
     
 
 
-    def preprocess_text_data(definitions, english_form_data, spanish_form_data, violence_definitions, survey_data):
+    def preprocess_text_data(self, definitions, english_form_data, spanish_form_data, violence_definitions):
         """
         Preprocess text data provided for training purposes.
 
         Args:
+        self: instance of the class
         definitions: text file, general definitions
         english_form_data: text file, form data in English
         spanish_form_data: text file, form data in Spanish
         violence_definitions: text file, violence definitions
-        survey_data: pd.DataFrame, survey data
 
         Returns:
-        list, input_texts
-        list, target_texts
+        tuple: (input_texts, target_texts)
         
         """
         input_texts = []
@@ -137,23 +130,26 @@ class Chatbot:
                 section, details = line.split(':', 1)
                 input_texts.append(section)
                 target_texts.append(details.strip())
-        
+
         for line in spanish_form_data:
             if ':' in line:
                 section, details = line.split(':', 1)
                 input_texts.append(section)
                 target_texts.append(details.strip())
 
-        for row in survey_data:
-            input_text = f"Incident reported on {row['Report Date']} in {row['County']} county by {row['Agency']}"
-            target_text = f"Offense: {row['Offense']}, Offender: {row['Offender']} ({row['Offender Age']} years old, {row['Offender Gender']}, {row['Offender Race']}, {row['Offender Ethnicity']}), Victim: {row['Victim']} ({row['Victim Age']} years old, {row['Victim Gender']}, {row['Victim Race']}, {row['Victim Ethnicity']}), Relationship: {row['Victim/Offender Relationship']}, Year: {row['Report Year']}"
-        
-            input_texts.append(input_text)
-            target_texts.append(target_text)
+        print(f"Total input texts: {len(input_texts)}")
+        print(f"Total target texts: {len(target_texts)}")
 
-        return input_texts, target_texts
-    
-    input_texts, target_texts = preprocess_text_data(definitions, english_form_data, spanish_form_data, violence_definitions, survey_data)
+        if len(input_texts) == 0 or len(target_texts) == 0:
+            raise ValueError("Input texts or target texts are empty after preprocessing.")
+
+        # Vectorize data without printing it
+        self.vectorizer.adapt(input_texts + target_texts)
+        X = self.vectorizer(input_texts)
+        y = self.vectorizer(target_texts)
+
+        y = tf.expand_dims(y, -1)  # Shape: (batch_size, sequence_length, 1)
+        return X, y
 
 
     def train(self, inputs, outputs, epochs=100):
@@ -170,52 +166,142 @@ class Chatbot:
         None
             
         """
-        X = self.vectorizer(inputs)
-        y = self.vectorizer(outputs)
-        self.model.fit(X, y, epochs=epochs)
+        # Convert lists to tensors
+        inputs = tf.convert_to_tensor(inputs, dtype=tf.int64)
+        outputs = tf.convert_to_tensor(outputs, dtype=tf.int64)
+
+        # Reshape outputs for sparse_categorical_crossentropy
+        outputs = tf.expand_dims(outputs, -1)  # Shape: (batch_size, sequence_length, 1)
+
+        print("Shape of inputs:", inputs.shape)
+        print("Shape of outputs:", outputs.shape)
+
+        self.model.fit(inputs, outputs, epochs=epochs, batch_size=1)
 
 
-    def response(self, input_text, language):
+
+    def preprocess(self, text):
         """
-        Generate a response based on the input text.
+        Preprocess the input text.
 
         Args:
         self: instance of the class
-        input_text: str, input text
-        language: str, language of the input text
+        text: str, input text
 
         Returns:
-        str, response text
+        tensor, processed input text
             
         """
-        processed_input = self.preprocess(input_text)
-        response = self.model.predict(processed_input)
-        response_text = self.vectorizer.get_vocabulary()[tf.argmax(response[0])]
-        
+        return self.vectorizer(text)
+
+
+    def response(self, user_input, language):
+        """
+        Generate a response from the model based on user input and selected language.
+        Args:
+        self: instance of the class
+        user_input: str, input from user
+        language: str, selected language
+        """
         if language.lower() == 'spanish':
-            response_text = self.translator.translate(response_text, src='en', dest='es').text
+            processed_input = self.preprocess_spanish_input(user_input)
+        else:
+            processed_input = self.preprocess_english_input(user_input)
+
+        processed_input = tf.convert_to_tensor(processed_input, dtype=tf.int64)
+        processed_input = tf.expand_dims(processed_input, axis=0)
         
+        # Generate response
+        prediction = self.model.predict(processed_input)
+        response_text = self.postprocess_prediction(prediction)
+
         return response_text
+
+
+    def preprocess_spanish_input(self, text):
+        """
+        Preprocess Spanish text input.
+        Args:
+        self: instance of the class
+        text: str, input text in Spanish
+        """
+        # Vectorize and pad the Spanish text input
+        vectorized_input = self.vectorizer(text).numpy()
+        padded_input = tf.keras.preprocessing.sequence.pad_sequences(
+            [vectorized_input],
+            maxlen=self.max_length,
+            padding='post',
+            truncating='post'
+        )
+
+        return padded_input[0] # Take the first item from the batch
+
+    def preprocess_english_input(self, text):
+        """
+        Preprocess English text input.
+        Args:
+        self: instance of the class
+        text: str, input text in English
+        """
+        vectorized_input = self.vectorizer(text).numpy()
+        padded_input = tf.keras.preprocessing.sequence.pad_sequences(
+            [vectorized_input],
+            maxlen=self.max_length,
+            padding='post',
+            truncating='post'
+        )
+
+        return padded_input[0]  # Take the first item from the batch
+
+    def postprocess_prediction(self, prediction):
+        """
+        Convert model prediction to human-readable text.
+        Args:
+        self: instance of the class
+        prediction: model prediction
+        """
+        # Convert prediction to text
+        predicted_sequence = tf.argmax(prediction, axis=-1).numpy()
+        response_text = self.vectorizer.inverse_transform(predicted_sequence)  # Adjust this line if needed
+        return response_text
+
     
     
 def main():
+    print("Initializing the chatbot...")
+    # Initialize the chatbot
+    chatbot = Chatbot(max_length=256, vocab_size=10000)
+
+    print("Loading data...")
+    # Load data
+    general_definitions, english_form_data, spanish_form_data, violence_definitions = chatbot.load_data()
+    print("Data loaded.")
+
+    print("Preprocessing text data...")
+    # Preprocess text data
+    input_texts, target_texts = chatbot.preprocess_text_data(general_definitions, english_form_data, spanish_form_data, violence_definitions)
+    
+    print("Adapting vectorizer...")
+    print("Text data preprocessed and adapted to vectorizer.")
+
+    print("Training the model...")
+    # Train the model
+    chatbot.train(input_texts, target_texts)
+    print("Model trained.")
     # Get user input
     language = input("What language would you like to use? (English or Spanish) ")
+    if language.lower() not in ['english', 'spanish']:
+        language = input("Please enter either English or Spanish as your preferred language: ")
+        return
+    print(f"Language selected: {language}")
+
     while True:
         user_input = input("How can I help you today? ")
-        if user_input.lower() == 'exit':
+        if user_input.lower() in ['exit', 'quit', 'goodbye', 'bye', 'stop', 'end']:
+            print("Goodbye!")
             break
-
-        chatbot = Chatbot(max_length=256, vocab_size=10000)
-
-        # Load data
-        general_definitions, english_form_data, spanish_form_data, violence_definitions, survey_data = chatbot.load_data()
-        chatbot.preprocess_text_data(general_definitions, english_form_data, spanish_form_data, violence_definitions, survey_data)
-        chatbot.adapt(chatbot.input_texts, chatbot.target_texts)
-
-        # Train the model
-        chatbot.train(chatbot.input_texts, chatbot.target_texts)
-
+        
+        # Generate a response
         response = chatbot.response(user_input, language)
         print(response)
 
