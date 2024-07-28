@@ -1,0 +1,106 @@
+body {
+    background-image: url('../images/indexlook.png');
+    background-size: cover; /* Optional, to cover the entire background */
+    margin-left: 80px;
+    margin-top: 130px;
+    padding: 0;
+    font-family: 'B612';
+}
+
+.name {
+    margin-top: 20px;
+    font-size: 70px;;
+    color: white;
+    letter-spacing: .5rem;
+}
+
+.sub_name {
+    margin-top: -30px;
+    margin-bottom: 100px;
+    font-size: 14px;
+    color: white;
+    letter-spacing: .2rem;
+
+}
+
+.menu {
+    width: 700px;
+    margin-left: -20px;
+}
+
+
+.index_button {
+    border-color: #12E1B9;
+    border-radius: 1px;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 30px;
+    margin: 10px 10px;
+    font-size: 12px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 270px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+@font-face {
+    font-family: 'B612';
+    src: url('../fonts/NeueMachina-Light.otf');
+}
+
+.icon {
+    display: inline-block;
+    margin-left: 10px;
+    border: solid #12E1B9;
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    transition: transform 0.4s;
+    transform: rotate(-45deg);
+}
+
+.index_button:hover .icon {
+    transform: rotate(-13deg) translateX(15px); /* Move the icon on hover */
+}
+
+
+.page_button {
+    border-color: #12E1B9;
+    border-radius: 0.5px;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 16px;
+    font-size: 10px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 120px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+    margin-top: -80px;
+
+}
+
+.page_icon {
+    display: inline-block;
+    margin-right: 10px;
+    border: solid #12E1B9;
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    transition: transform 0.4s;
+    transform: rotate(130deg);
+}
+
+.page_button:hover .page_icon {
+    transform: rotate(-90deg) translateX(-8px); /* Move the icon on hover */
+}

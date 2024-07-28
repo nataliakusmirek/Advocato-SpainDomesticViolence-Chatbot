@@ -1,12 +1,27 @@
 <!-- myapp/templates/myapp/index.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My App</title>
+    <link rel="stylesheet" href="{% static 'assets/styles/style.css' %}">
+    <title>Advocato</title>
+    <link rel="icon" type="image/x-icon" href='static/assets/images/favicon.png'>
 </head>
 <body>
-    <h1>Welcome to My App!</h1>
+    <h1 class="name">ADVOCATO</h1>
+    <h4 class="sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
+
+    <div class="menu">
+        <a href="{% url 'spain_form' %}"><button type="button" class="index_button">
+            FOR SPAIN'S WOMEN <span class="icon"></span></button></a>
+        <a href="{% url 'future' %}"><button type="button" class="index_button">
+            FOR THE FUTURE <span class="icon"></span></button></a>
+        <a href="{% url 'portfolio' %}"><button type="button" class="index_button">
+            OUR PORTFOLIO <span class="icon"></span></button></a>
+        <a href="{% url 'story' %}"><button type="button" class="index_button">
+            OUR STORY <span class="icon"></span></button></a>
+    </div>
 </body>
 </html>
