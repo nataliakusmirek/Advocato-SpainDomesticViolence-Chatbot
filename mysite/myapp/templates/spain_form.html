@@ -9,10 +9,47 @@
     <title>Advocato</title>
     <link rel="icon" type="image/x-icon" href='static/assets/images/favicon.png'>
 </head>
-<body>
-    <h1 class="name">ADVOCATO</h1>
-    <h4 class="sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
-        <a href="{% url 'index' %}"><button type="button" class="page_button">
-            <span class="page_icon"></span> BACK </button></a>
+<body class="project_body">
+    <h1 class="project_name">ADVOCATO</h1>
+    <h4 class="project_sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
+        <a href="{% url 'index' %}"><button type="button" class="project_page_button">
+            BACK</button></a>
+
+
+    <div class="project_about">
+        <div class="why">
+            <h2 class="project_section">WHY</h2>
+            <p class="project_paragraph">
+                The VioGén system in Spain is criticized for its lack of transparency, underestimation of psychological violence, and rigid questions.<br><br>
+
+                The system's dichotomous coding of risk factors does not allow for thorough understanding, leading to poor prediction accuracy.<br><br>
+
+                The need to better predict the risk of lethality in gender-based violence and intimate partner homicides.
+            </p>
+        </div>
+        <div class="start">
+            <h2 class="project_main_text">REPORT DOMESTIC VIOLENCE,</h2>
+            <img src="{% static 'assets/images/spainphoto.jpg' %}" class="project_image">
+            <h2 class="project_main_text">ACCURACY AND TRANSPARENCY <br>PROVIDED WITH OUR CHATBOT.</h2>
+            <a href="{% url 'index' %}"><button type="button" class="project_main_button">
+                BEGIN</button></a>
+
+        </div>
+        <div class="how">
+            <h2 class="project_section">HOW</h2>
+            <p class="project_paragraph">
+                Advocato has created a bilingual chatbot, in Spanish and English, for women to use during their application process, as well as a updated, more robust form. <br><br>
+
+                The chatbot is trained based on keywords in the form to help clarify for the user.
+
+                The chatbot has been trained to achieve 92% accuracy. <br><br>
+
+                It is our hope that our contributions can serve the women of spain in their times of distress.
+            </p>
+
+        </div>
+
+    </div>
 </body>
 </html>
+

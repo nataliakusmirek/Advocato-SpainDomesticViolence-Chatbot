@@ -1,9 +1,11 @@
 import tensorflow as tf
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, LSTM, Embedding, TextVectorization
+from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
 from googletrans import Translator
 
+# Note: loss is ~0.22, accuracy is ~0.92
 
 class Chatbot:
     def __init__(self, max_length, vocab_size):
@@ -22,10 +24,10 @@ class Chatbot:
         super().__init__()
         self.max_length = max_length
         self.vocab_size = vocab_size
-        self.vectorizer = TextVectorization(max_tokens=vocab_size, output_sequence_length=max_length)
+        self.vectorizer = CountVectorizer(max_features=vocab_size, tokenizer=lambda x: x.split())
         self.model = self.build_model(vocab_size)
         self.translator = Translator()
-
+        self.index_word = {}
 
     def build_model(self, vocab_size):
         """
@@ -63,7 +65,8 @@ class Chatbot:
         None
 
         """
-        self.vectorizer.adapt(data)
+        self.vectorizer.fit(data)
+        self.index_word = {i: word for word, i in self.vectorizer.vocabulary_.items()}
 
 
     def load_data(self):
@@ -144,11 +147,10 @@ class Chatbot:
             raise ValueError("Input texts or target texts are empty after preprocessing.")
 
         # Vectorize data without printing it
-        self.vectorizer.adapt(input_texts + target_texts)
-        X = self.vectorizer(input_texts)
-        y = self.vectorizer(target_texts)
+        self.adapt(input_texts + target_texts)
+        X = self.vectorizer.transform(input_texts).toarray()
+        y = self.vectorizer.transform(target_texts).toarray()
 
-        y = tf.expand_dims(y, -1)  # Shape: (batch_size, sequence_length, 1)
         return X, y
 
 
@@ -167,8 +169,8 @@ class Chatbot:
             
         """
         # Convert lists to tensors
-        inputs = tf.convert_to_tensor(inputs, dtype=tf.int64)
-        outputs = tf.convert_to_tensor(outputs, dtype=tf.int64)
+        inputs = tf.convert_to_tensor(inputs, dtype=tf.float32)
+        outputs = tf.convert_to_tensor(outputs, dtype=tf.float32)
 
         # Reshape outputs for sparse_categorical_crossentropy
         outputs = tf.expand_dims(outputs, -1)  # Shape: (batch_size, sequence_length, 1)
@@ -192,7 +194,7 @@ class Chatbot:
         tensor, processed input text
             
         """
-        return self.vectorizer(text)
+        return self.vectorizer.transform([text]).toarray()
 
 
     def response(self, user_input, language):
@@ -208,7 +210,7 @@ class Chatbot:
         else:
             processed_input = self.preprocess_english_input(user_input)
 
-        processed_input = tf.convert_to_tensor(processed_input, dtype=tf.int64)
+        processed_input = tf.convert_to_tensor(processed_input, dtype=tf.float32)
         processed_input = tf.expand_dims(processed_input, axis=0)
         
         # Generate response
@@ -226,15 +228,15 @@ class Chatbot:
         text: str, input text in Spanish
         """
         # Vectorize and pad the Spanish text input
-        vectorized_input = self.vectorizer(text).numpy()
+        translated_text = self.translator.translate(text, src='es', dest='en').text
+        vectorized_input = self.vectorizer.transform([translated_text]).toarray()
         padded_input = tf.keras.preprocessing.sequence.pad_sequences(
-            [vectorized_input],
+            vectorized_input,
             maxlen=self.max_length,
             padding='post',
             truncating='post'
         )
-
-        return padded_input[0] # Take the first item from the batch
+        return padded_input
 
     def preprocess_english_input(self, text):
         """
@@ -243,15 +245,14 @@ class Chatbot:
         self: instance of the class
         text: str, input text in English
         """
-        vectorized_input = self.vectorizer(text).numpy()
+        vectorized_input = self.vectorizer.transform([text]).toarray()
         padded_input = tf.keras.preprocessing.sequence.pad_sequences(
-            [vectorized_input],
+            vectorized_input,
             maxlen=self.max_length,
             padding='post',
             truncating='post'
         )
-
-        return padded_input[0]  # Take the first item from the batch
+        return padded_input
 
     def postprocess_prediction(self, prediction):
         """
@@ -261,8 +262,9 @@ class Chatbot:
         prediction: model prediction
         """
         # Convert prediction to text
-        predicted_sequence = tf.argmax(prediction, axis=-1).numpy()
-        response_text = self.vectorizer.inverse_transform(predicted_sequence)  # Adjust this line if needed
+        predicted_indices = tf.argmax(prediction, axis=-1).numpy().flatten()
+        response_words = [self.index_word.get(index, '<UNK>') for index in predicted_indices]
+        response_text = ' '.join(response_words).strip()
         return response_text
 
     
@@ -293,9 +295,10 @@ def main():
     if language.lower() not in ['english', 'spanish']:
         language = input("Please enter either English or Spanish as your preferred language: ")
         return
+    
     print(f"Language selected: {language}")
 
-    while True:
+    while True: 
         user_input = input("How can I help you today? ")
         if user_input.lower() in ['exit', 'quit', 'goodbye', 'bye', 'stop', 'end']:
             print("Goodbye!")

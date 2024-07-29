@@ -1,3 +1,41 @@
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.progress-bar {
+    width: 80%;
+    max-width: 400px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    width: 0;
+    height: 100%;
+    background-color: #070D29;
+    animation: fill 4s infinite;
+}
+
+@keyframes fill {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
 body {
     background-image: url('../images/indexlook.png');
     background-size: cover; /* Optional, to cover the entire background */
@@ -103,4 +141,185 @@ a {
 
 .page_button:hover .page_icon {
     transform: rotate(-90deg) translateX(-8px); /* Move the icon on hover */
+}
+
+.paragraphs {
+    color: white;
+    margin-top: 80px;
+}
+
+.user_buttons {
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    padding: 10px;
+    font-size: 10px;
+    cursor: pointer;
+    display: block;
+    letter-spacing: .2rem;
+    text-align: left;
+    position: relative;
+}
+
+.user_buttons::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #12E1B9;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: scaleY(0);
+    transition: transform 0.3s;
+}
+
+.user_buttons:hover::after {
+    transform: scaleY(1);
+}
+
+
+.user_entries {
+    margin-top: 200px;
+    margin-left: -20px;
+    text-align: left;
+}
+
+
+.project_name {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #12E1B9;
+    letter-spacing: .5rem;
+}
+
+.project_sub_name {
+    margin-bottom: 100px;
+    margin-left: 10px;
+    font-size:6px;
+    color: #12E1B9;
+    letter-spacing: .1rem;
+
+}
+
+.project_body {
+    background: #070D29;
+    margin-top: 30px;
+    margin-left: 10px;
+    padding: 0;
+    font-family: 'B612';
+    text-align: center;
+}
+
+.project_page_button {
+    border: 1px solid #12E1B9;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 10px;
+    transition: color 0.4s, border-color 0.4s;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+    padding-left: 13px;
+
+    /* Position the button in the top left corner */
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    margin: 20px 20px; 
+}
+
+.project_page_button:hover {
+    border-color: white;
+    color: white;
+}
+
+/* Container to center and layout the sections in a row */
+.project_about {
+    margin-top: 130px;
+    display: flex;
+    justify-content: space-around; 
+    flex-wrap: wrap; 
+}
+
+.project_section_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.project_section, .project_main_text {
+    text-align: center; 
+    color: #12E1B9;
+}
+
+.project_section {
+    margin-bottom: -10px;
+    font-size: 18px;
+}
+
+.project_main_text {
+    color: white;
+    font-size: 20px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-top: 30px;
+    margin-bottom: 30px; 
+}
+
+.project_main_button {
+    border: 1px solid #12E1B9;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 10px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+    padding-left: 13px;
+    margin-top: 20px;
+    transition: color 0.4s, border-color 0.4s;
+}
+
+.project_main_button:hover {
+    border-color: white;
+    color: white;
+}
+
+.project_paragraph {
+    border: 1px solid #12E1B9;
+    border-radius: 0.5px;
+    color: #12E1B9;    
+    margin-top: 20px;
+    text-align: left;
+    font-size: 15px;
+    width: 230px;
+    height: 250px;
+    padding: 20px;
+}
+
+.project_image {
+    display: block;
+    margin: 0 auto; /* Center horizontally */
+    width: 470px;
+    height: 290px;
+}
+
+.start {
+    margin-top: -50px;
+}
+
+@media (max-width: 768px) {
+    .project_about {
+        flex-direction: column;
+        align-items: center;
+    }
 }

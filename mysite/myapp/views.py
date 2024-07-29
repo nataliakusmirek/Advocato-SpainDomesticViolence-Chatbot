@@ -15,3 +15,9 @@ def portfolio(request):
 
 def story(request):
     return render(request, 'story.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def register(request):
+    return render(request, 'register.html')
