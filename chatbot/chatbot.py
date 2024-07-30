@@ -43,6 +43,7 @@ class Chatbot:
 
         """
         model = Sequential([
+            tf.keras.Input(shape=(297,)),
             Embedding(input_dim=vocab_size, output_dim=64, mask_zero=True),
             LSTM(128, return_sequences=True),
             LSTM(128, return_sequences=True),
@@ -194,7 +195,10 @@ class Chatbot:
         tensor, processed input text
             
         """
-        return self.vectorizer.transform([text]).toarray()
+        vectorized_input = self.vectorizer.transform([text]).toarray()
+        # Ensure the shape is (1, 297)
+        processed_input = vectorized_input.reshape(1, -1)
+        return processed_input
 
 
     def response(self, user_input, language):
@@ -210,10 +214,13 @@ class Chatbot:
         else:
             processed_input = self.preprocess_english_input(user_input)
 
+        # Convert to tensor
         processed_input = tf.convert_to_tensor(processed_input, dtype=tf.float32)
-        processed_input = tf.expand_dims(processed_input, axis=0)
-        
-        # Generate response
+    
+        if len(processed_input.shape) == 2:
+            processed_input = tf.expand_dims(processed_input, axis=0)
+
+        print("Shape of processed input:", processed_input.shape)
         prediction = self.model.predict(processed_input)
         response_text = self.postprocess_prediction(prediction)
 
@@ -230,13 +237,9 @@ class Chatbot:
         # Vectorize and pad the Spanish text input
         translated_text = self.translator.translate(text, src='es', dest='en').text
         vectorized_input = self.vectorizer.transform([translated_text]).toarray()
-        padded_input = tf.keras.preprocessing.sequence.pad_sequences(
-            vectorized_input,
-            maxlen=self.max_length,
-            padding='post',
-            truncating='post'
-        )
-        return padded_input
+        # Ensure the shape is (1, 297)
+        processed_input = vectorized_input.reshape(1, -1)
+        return processed_input
 
     def preprocess_english_input(self, text):
         """
@@ -246,13 +249,9 @@ class Chatbot:
         text: str, input text in English
         """
         vectorized_input = self.vectorizer.transform([text]).toarray()
-        padded_input = tf.keras.preprocessing.sequence.pad_sequences(
-            vectorized_input,
-            maxlen=self.max_length,
-            padding='post',
-            truncating='post'
-        )
-        return padded_input
+        # Ensure the shape is (1, 297)
+        processed_input = vectorized_input.reshape(1, -1)
+        return processed_input
 
     def postprocess_prediction(self, prediction):
         """

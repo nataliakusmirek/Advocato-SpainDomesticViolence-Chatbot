@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import redirect
 
 # Create your views here.
 def index(request):
@@ -7,8 +11,8 @@ def index(request):
 def spain_form(request):
     return render(request, 'spain_form.html')
 
-def future(request):
-    return render(request, 'future.html')
+def contact(request):
+    return render(request, 'contact.html')
 
 def portfolio(request):
     return render(request, 'portfolio.html')
