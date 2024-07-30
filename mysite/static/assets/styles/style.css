@@ -443,3 +443,12 @@ a {
     border-color: white;
     color: white;
 }
+
+.register_style {
+    font-size: 14px;
+    color: #12E1B9;
+    /* Blue line styling */
+    border-bottom: 1px solid white; 
+    padding-bottom: 2px;
+    width: fit-content; 
+}

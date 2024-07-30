@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'assets/styles/style.css' %}">
+    <title>Advocato</title>
+    <link rel="icon" type="image/x-icon" href='static/assets/images/favicon.png'>
+</head>
+<body>
+    <script src="{% static 'assets/styles/script.js' %}"></script>
+    <h1 class="name">ADVOCATO</h1>
+    <h4 class="sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
+        <a href="{% url 'index' %}"><button type="button" class="page_button">
+            <span class="page_icon"></span> BACK </button></a>
+    <div class = 'paragraphs'>
+        <h3 class="sub_name" style="margin-top:30px; margin-bottom:30px; width: 400px;">If you'd like to have a account with us, please email kusmire@bc.edu.</h3>
+        <p class="register_style" style="text-align: center;">Include your full name, organization, reason for account, usage timeline.</p>
+    </div>
+</body>
+</html>
