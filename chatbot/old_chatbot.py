@@ -198,6 +198,8 @@ class Chatbot:
         vectorized_input = self.vectorizer.transform([text]).toarray()
         # Ensure the shape is (1, 297)
         processed_input = vectorized_input.reshape(1, -1)
+        if processed_input.shape[0] != 1 or processed_input.shape[1] != 297:
+            processed_input = tf.squeeze(processed_input, axis=1)
         return processed_input
 
 
@@ -217,8 +219,8 @@ class Chatbot:
         # Convert to tensor
         processed_input = tf.convert_to_tensor(processed_input, dtype=tf.float32)
     
-        if len(processed_input.shape) == 2:
-            processed_input = tf.expand_dims(processed_input, axis=0)
+        if len(processed_input.shape) > 2:
+            processed_input = tf.squeeze(processed_input, axis=1)
 
         print("Shape of processed input:", processed_input.shape)
         prediction = self.model.predict(processed_input)
