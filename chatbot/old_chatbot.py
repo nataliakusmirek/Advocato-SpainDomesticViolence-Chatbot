@@ -81,7 +81,6 @@ class Chatbot:
         tuple: (general_definitions, english_form_data, spanish_form_data, violence_definitions)
             
         """
-        # Note: survey data was already cleaned and null values removed before access was granted
         
         with open('training_sets/definitions.txt', 'r', encoding='utf-8') as file:
             general_definitions = file.readlines()
@@ -301,7 +300,7 @@ def main():
 
     while True: 
         user_input = input("How can I help you today? ")
-        if user_input.lower() in ['exit', 'quit', 'goodbye', 'bye', 'stop', 'end']:
+        if user_input.lower() in ['exit', 'quit', 'goodbye', 'bye', 'stop', 'end', 'done', 'finish', 'finished']:
             print("Goodbye!")
             break
         
@@ -314,3 +313,8 @@ if __name__ == "__main__":
 
 
 # Deploy on Django site!
+
+
+
+
+# Current output is based on form text in training set, repetitive and inaccurate.
