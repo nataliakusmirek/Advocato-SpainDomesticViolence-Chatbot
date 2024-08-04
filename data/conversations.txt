@@ -1,0 +1,40 @@
+L001 + ++ + SUB001 + ++ + DEF001 + ++ + What does "felony" mean in this context?
+L002 + ++ + SUB002 + ++ + DEF002 + ++ + How do I describe the incident?
+L003 + ++ + SUB003 + ++ + DEF003 + ++ + What should I include in the "victim details" section?
+L004 + ++ + SUB004 + ++ + DEF004 + ++ + What is "assault" and how does it relate to domestic violence?
+L005 + ++ + SUB005 + ++ + DEF005 + ++ + What constitutes "rape" in a domestic violence context?
+L006 + ++ + SUB006 + ++ + DEF006 + ++ + What should I mention when describing "physical harm"?
+L007 + ++ + SUB007 + ++ + DEF007 + ++ + How do I explain "emotional or psychological harm"?
+L008 + ++ + SUB008 + ++ + DEF008 + ++ + What is considered "sexual activity or behavior" in this form?
+L009 + ++ + SUB009 + ++ + DEF009 + ++ + How do I describe "financial or economic abuse"?
+L010 + ++ + SUB010 + ++ + DEF010 + ++ + Who is a "perpetrator" in the context of domestic violence?
+L011 + ++ + SUB011 + ++ + DEF011 + ++ + How do I identify a "victim"?
+L012 + ++ + SUB012 + ++ + DEF012 + ++ + What details should I include about the "incident"?
+L013 + ++ + SUB013 + ++ + DEF013 + ++ + What does "authority" mean in this context?
+L014 + ++ + SUB014 + ++ + DEF014 + ++ + Who are "authorities" and how should I reference them?
+L015 + ++ + SUB015 + ++ + DEF015 + ++ + What constitutes a "threat" in this form?
+L016 + ++ + SUB016 + ++ + DEF016 + ++ + How should I describe "harm" caused by the incident?
+L017 + ++ + SUB017 + ++ + DEF017 + ++ + What is "abuse of a child or vulnerable adult"?
+L018 + ++ + SUB018 + ++ + DEF018 + ++ + What is "aggravated assault" and how do I describe it?
+L019 + ++ + SUB019 + ++ + DEF019 + ++ + How do I describe "assault" in detail?
+L020 + ++ + SUB020 + ++ + DEF020 + ++ + What is "criminal trespass" and how do I address it?
+L021 + ++ + SUB021 + ++ + DEF021 + ++ + What is "custodial interference" and how should it be described?
+L022 + ++ + SUB022 + ++ + DEF022 + ++ + What is "dangerous crimes against children"?
+L023 + ++ + SUB023 + ++ + DEF023 + ++ + How do I describe "disorderly conduct"?
+L024 + ++ + SUB024 + ++ + DEF024 + ++ + What does "endangerment" involve?
+L025 + ++ + SUB025 + ++ + DEF025 + ++ + How should I report "harassment"?
+L026 + ++ + SUB026 + ++ + DEF026 + ++ + What is "interfering with judicial proceedings"?
+L027 + ++ + SUB027 + ++ + DEF027 + ++ + What is "kidnapping" and how do I detail it?
+L028 + ++ + SUB028 + ++ + DEF028 + ++ + What is "manslaughter" and how should it be described?
+L029 + ++ + SUB029 + ++ + DEF029 + ++ + How do I describe "murder" if it applies?
+L030 + ++ + SUB030 + ++ + DEF030 + ++ + What is "negligent homicide"?
+L031 + ++ + SUB031 + ++ + DEF031 + ++ + What constitutes "sexual assault"?
+L032 + ++ + SUB032 + ++ + DEF032 + ++ + How do I describe "stalking"?
+L033 + ++ + SUB033 + ++ + DEF033 + ++ + What does "threatening and intimidating" involve?
+L034 + ++ + SUB034 + ++ + DEF034 + ++ + What is "unlawful imprisonment" and how should it be reported?
+L035 + ++ + SUB035 + ++ + DEF035 + ++ + What is "child abuse"?
+L036 + ++ + SUB036 + ++ + DEF036 + ++ + What does "child endangerment" entail?
+L037 + ++ + SUB037 + ++ + DEF037 + ++ + What is a "protection order" and how does it help?
+L038 + ++ + SUB038 + ++ + DEF038 + ++ + What is a "restraining order" and what are its conditions?
+L039 + ++ + SUB039 + ++ + DEF039 + ++ + Is the crime a "felony"? How should this be described?
+L040 + ++ + SUB040 + ++ + DEF040 + ++ + What does a "conviction" mean and how should it be reported?

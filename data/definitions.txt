@@ -1,0 +1,40 @@
+L001 + ++ + SUB001 + ++ + DEF001 + ++ + Felony: A serious criminal offense that is punishable by more severe penalties than lesser crimes, such as imprisonment for more than one year or even the death penalty in some jurisdictions. In the context of domestic violence, a felony might include severe physical harm, repeated offenses, or the use of a deadly weapon.
+L002 + ++ + SUB002 + ++ + DEF002 + ++ + Incident: An event or occurrence, often something unusual or disruptive.
+L003 + ++ + SUB003 + ++ + DEF003 + ++ + Victim Details: Information about the person affected by the incident, including their name, age, gender, relationship to the perpetrator, and any relevant medical or historical details.
+L004 + ++ + SUB004 + ++ + DEF004 + ++ + Assault: An intentional act by one person that creates an apprehension in another of an imminent harmful or offensive contact. In the context of domestic violence, assault can include hitting, slapping, pushing, or any other physical aggression that causes fear or harm to the victim.
+L005 + ++ + SUB005 + ++ + DEF005 + ++ + Rape: A form of sexual assault involving non-consensual sexual intercourse, often achieved through force, threats, or coercion. In the context of domestic violence, rape can occur within relationships, including marriage, and is a serious crime that violates the victim's bodily autonomy and dignity.
+L006 + ++ + SUB006 + ++ + DEF006 + ++ + Physical Harm: Any injury or damage to the body resulting from the incident, including bruises, cuts, or broken bones.
+L007 + ++ + SUB007 + ++ + DEF007 + ++ + Emotional or Psychological Harm: Mental distress or psychological trauma caused by the incident, which may include anxiety, depression, or PTSD.
+L008 + ++ + SUB008 + ++ + DEF008 + ++ + Sexual Activity or Behavior: Actions or conduct involving sexual acts or behavior, which may be relevant in cases of sexual abuse or assault.
+L009 + ++ + SUB009 + ++ + DEF009 + ++ + Financial or Economic Abuse: Abuse involving control or manipulation of a person's financial resources or economic situation, such as withholding money or assets.
+L010 + ++ + SUB010 + ++ + DEF010 + ++ + Perpetrator: Someone who commits a crime or harmful act.
+L011 + ++ + SUB011 + ++ + DEF011 + ++ + Victim: Someone who is harmed or affected by another person's actions.
+L012 + ++ + SUB012 + ++ + DEF012 + ++ + Incident: An event or occurrence, often something unusual or disruptive.
+L013 + ++ + SUB013 + ++ + DEF013 + ++ + Authority: The power to make decisions and enforce rules.
+L014 + ++ + SUB014 + ++ + DEF014 + ++ + Authorities: People or organizations that have the power to enforce laws.
+L015 + ++ + SUB015 + ++ + DEF015 + ++ + Threat: A statement or action indicating harm or danger.
+L016 + ++ + SUB016 + ++ + DEF016 + ++ + Harm: Damage or injury to a person or thing.
+L017 + ++ + SUB017 + ++ + DEF017 + ++ + Abuse of a Child or Vulnerable Adult: Mistreating or neglecting a child or an adult who needs protection.
+L018 + ++ + SUB018 + ++ + DEF018 + ++ + Aggravated Assault: A serious attack that causes severe injury, often with a weapon.
+L019 + ++ + SUB019 + ++ + DEF019 + ++ + Assault: Physically attacking someone or threatening to do so.
+L020 + ++ + SUB020 + ++ + DEF020 + ++ + Criminal Trespass: Entering someone’s property without permission.
+L021 + ++ + SUB021 + ++ + DEF021 + ++ + Custodial Interference: Wrongfully taking or holding someone involved in a custody dispute.
+L022 + ++ + SUB022 + ++ + DEF022 + ++ + Dangerous Crimes against Children: Serious offenses that put children in great danger.
+L023 + ++ + SUB023 + ++ + DEF023 + ++ + Disorderly Conduct: Behavior that disturbs the peace or safety of others.
+L024 + ++ + SUB024 + ++ + DEF024 + ++ + Endangerment: Putting someone in a situation where they are at risk of harm.
+L025 + ++ + SUB025 + ++ + DEF025 + ++ + Harassment: Repeatedly bothering or intimidating someone.
+L026 + ++ + SUB026 + ++ + DEF026 + ++ + Interfering with Judicial Proceedings: Disrupting or obstructing legal processes.
+L027 + ++ + SUB027 + ++ + DEF027 + ++ + Kidnapping: Illegally taking or holding someone against their will.
+L028 + ++ + SUB028 + ++ + DEF028 + ++ + Manslaughter: Killing someone without planning to do so.
+L029 + ++ + SUB029 + ++ + DEF029 + ++ + Murder: Intentionally killing someone.
+L030 + ++ + SUB030 + ++ + DEF030 + ++ + Negligent Homicide: Causing someone’s death through careless actions.
+L031 + ++ + SUB031 + ++ + DEF031 + ++ + Sexual Assault: Any unwanted sexual contact or behavior.
+L032 + ++ + SUB032 + ++ + DEF032 + ++ + Stalking: Repeatedly following or contacting someone in a way that causes them fear.
+L033 + ++ + SUB033 + ++ + DEF033 + ++ + Threatening and Intimidating: Using threats to control or scare someone.
+L034 + ++ + SUB034 + ++ + DEF034 + ++ + Unlawful Imprisonment: Wrongfully holding someone against their will.
+L035 + ++ + SUB035 + ++ + DEF035 + ++ + Child Abuse: Mistreating or neglecting a child.
+L036 + ++ + SUB036 + ++ + DEF036 + ++ + Child Endangerment: Putting a child in danger or at risk of harm.
+L037 + ++ + SUB037 + ++ + DEF037 + ++ + Protection Order: A legal order to keep someone safe from harm or harassment.
+L038 + ++ + SUB038 + ++ + DEF038 + ++ + Restraining Order: A court order that prevents someone from contacting or approaching another person.
+L039 + ++ + SUB039 + ++ + DEF039 + ++ + Felony: A serious crime that can lead to long prison sentences or death.
+L040 + ++ + SUB040 + ++ + DEF040 + ++ + Conviction: A formal judgment by a court declaring someone guilty of a crime. It signifies that a person has been legally found responsible for a criminal offense and may result in penalties such as imprisonment, fines, or other legal consequences.
