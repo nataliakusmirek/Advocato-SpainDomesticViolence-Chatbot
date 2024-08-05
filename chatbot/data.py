@@ -12,6 +12,9 @@ import json
 def get_definitions():
     """
     Extracts text from the definitions.txt file and returns a dictionary of id to definition
+
+    Returns:
+    id2def: A dictionary of id to definition
     """
     id2def = {}
     with open('data/definitions.txt', 'r') as file:
@@ -32,6 +35,9 @@ def get_definitions():
 def get_conversations():
     """
     Extracts text from the conversations.txt file and returns a list of conversations
+
+    Returns:
+    convos: A list of conversations
     """
     convos = []
     with open('data/conversations.txt', 'r') as file:
@@ -47,6 +53,10 @@ def get_conversations():
 def build_subsets(id2def, convos):
     """
     Builds the dataset into two sets: definitions and conversations the chatbot will have
+
+    Returns:
+    definitions: A list of definitions
+    conversations: A list of conversations
     """
     definitions, conversations = [], []
     for key, convo in convos:
@@ -62,6 +72,9 @@ def build_subsets(id2def, convos):
 def build_datasets(definitions, conversations, test_ratio=0.2, val_ratio=0.1):
     """
     Builds the training and testing datasets from the definitions and conversations sets
+
+    Returns:
+    None
     """
     num_entries = len(definitions)
     test_size = int(num_entries * test_ratio)
@@ -94,10 +107,38 @@ def build_datasets(definitions, conversations, test_ratio=0.2, val_ratio=0.1):
     for file in files:
         file.close()
 
+def prepare_training_data(definitions, conversations):
+    """
+    Prepares the training data by creating encoder inputs, decoder inputs, and decoder targets
+
+    Returns:
+    enc_inputs: A list of encoder inputs
+    dec_inputs: A list of decoder inputs
+    dec_targets: A list of decoder targets
+    """
+    conversations = np.array(conversations)
+    definitions = np.array(definitions)
+
+    print(f"Conversations shape: {conversations.shape}")
+    print(f"Definitions shape: {definitions.shape}")
+
+    enc_inputs = definitions
+    dec_inputs = conversations[:, :-1]
+    dec_targets = conversations[:, 1:]
+
+    print(f"Encoder inputs shape: {enc_inputs.shape}")
+    print(f"Decoder inputs shape: {dec_inputs.shape}")
+    print(f"Decoder targets shape: {dec_targets.shape}")
+    
+    return enc_inputs, dec_inputs, dec_targets
+
 
 def load_vocab(vocab_file='chatbot/vocab.json'):
     """
     Loads the vocabulary from the vocab.json file
+
+    Returns:
+    word_index: A dictionary of word to index mappings
     """
     with open(vocab_file, 'r') as file:
         word_index = json.load(file)
@@ -107,6 +148,9 @@ def load_vocab(vocab_file='chatbot/vocab.json'):
 def add_special_tokens(word_index):
     """
     Adds special tokens to the vocabulary for better training
+
+    Returns:
+    word_index: A dictionary of word to index mappings
     """
     special_tokens = {
         '<pad>' : 0,
@@ -125,6 +169,9 @@ def add_special_tokens(word_index):
 def build_tokenizer(definitions, conversations):
     """
     Builds a tokenizer for the definitions and conversations
+
+    Returns:
+    tokenizer: A tokenizer object
     """
     tokenizer = tf.keras.preprocessing.text.Tokenizer()
     tokenizer.fit_on_texts(definitions + conversations)
@@ -142,6 +189,10 @@ def build_tokenizer(definitions, conversations):
 def tokenize_tokens(tokenizer, definitions, conversations):
     """
     Tokenizes each definition and conversation
+
+    Returns:
+    tokenized_defs: A list of tokenized definitions
+    tokenized_convos: A list of tokenized conversations
     """
     word_index = tokenizer.word_index
     start_token = tokenizer.word_index.get('<s>', 2)
@@ -151,6 +202,9 @@ def tokenize_tokens(tokenizer, definitions, conversations):
     def add_start_end_tokens(texts):
         """
         Adds start and end tokens to each text
+
+        Returns:
+        sequences: A list of tokenized sequences with start and end tokens added
         """
         sequences = tokenizer.texts_to_sequences(texts)
         for i in range(len(sequences)):
@@ -162,6 +216,9 @@ def tokenize_tokens(tokenizer, definitions, conversations):
     def pad_sequences_with_tokens(conversations):
         """
         Tokenizes text data and pads sequences to ensure uniformity
+
+        Returns:
+        sequences: A list of padded sequences with start and end tokens included
         """
         sequences = add_start_end_tokens(conversations) 
         return tf.keras.preprocessing.sequence.pad_sequences(
@@ -177,6 +234,10 @@ def tokenize_tokens(tokenizer, definitions, conversations):
 def filter_long_sequences(tokenized_defs, tokenized_convos, max_length=100):
     """
     Filters out sequences that are too long
+
+    Returns:
+    filtered_defs: A list of filtered definitions
+    filtered_convos: A list of filtered conversations
     """
     filtered_defs, filtered_convos = [], []
 
@@ -191,6 +252,11 @@ def filter_long_sequences(tokenized_defs, tokenized_convos, max_length=100):
 def build_tf_datasets(filtered_defs, filtered_convos, batch_size=64, val_ratio=0.1, test_ratio=0.2):
     """
     Builds training, validation, and testing datasets by creating tf.data.Dataset objects.
+
+    Returns:
+    train_dataset: A training dataset
+    val_dataset: A validation dataset
+    test_dataset: A testing dataset
     """
     num_entries = len(filtered_defs)
     test_size = int(num_entries * test_ratio)
@@ -227,52 +293,3 @@ def build_tf_datasets(filtered_defs, filtered_convos, batch_size=64, val_ratio=0
     test_dataset.save('saved_datasets/testing_tf_dataset')
     
     return train_dataset, val_dataset, test_dataset
-
-def main():
-    try:
-        # Load definitions and conversations
-        print("Loading data...")
-        id2def = get_definitions()
-        print(f"Definitions loaded: {len(id2def)} entries")
-        
-        convos = get_conversations()
-        print(f"Conversations loaded: {len(convos)} entries")
-        
-        # Build subsets of definitions and conversations
-        print("Building subsets...")
-        definitions, conversations = build_subsets(id2def, convos)
-        print(f"Definitions and conversations subsets built: {len(definitions)} entries each")
-        
-        # Build and save datasets
-        print("Building and saving datasets...")
-        build_datasets(definitions, conversations)
-        print("Datasets built and saved")
-        
-        # Build tokenizer
-        print("Building tokenizer...")
-        tokenizer = build_tokenizer(definitions, conversations)
-        print(f"Tokenizer built with {len(tokenizer.word_index)} tokens")
-        
-        # Tokenize and pad sequences
-        print("Tokenizing and padding sequences...")
-        tokenized_defs, tokenized_convos = tokenize_tokens(tokenizer, definitions, conversations)
-        print(f"Tokenized and padded definitions and conversations")
-        
-        # Filter out long sequences
-        print("Filtering long sequences...")
-        filtered_defs, filtered_convos = filter_long_sequences(tokenized_defs, tokenized_convos)
-        print(f"Filtered sequences: {len(filtered_defs)} definitions, {len(filtered_convos)} conversations")
-        
-        # Build TensorFlow dataset
-        print("Building TensorFlow dataset...")
-        dataset = build_tf_datasets(filtered_defs, filtered_convos)
-        print("TensorFlow datasets built and saved in 'datasets' folder")
-        
-        print("Data preparation complete.")
-        return dataset
-    
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-if __name__ == "__main__":
-    main()
