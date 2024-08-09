@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'assets/styles/style.css' %}">
+    <title>Advocato</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/images/favicon.png' %}">
+</head>
+<body class="user_body">
+    <h1 class="project_name">ADVOCATO</h1>
+    <h4 class="project_sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
+    <form action="{% url 'logout' %}" method="post" style="background:none; margin-bottom:-30px;">
+        {% csrf_token %}
+        <button type="submit" class="logout_button">LOGOUT</button>
+    </form>
+
+    <div class='navbar'>
+        <a href="{% url 'user_dashboard_spain' %}"><button type="button" class="nav_button">
+            FOR SPAIN'S WOMEN </button></a>
+        <a href="{% url 'user_dashboard' %}"><button type="button" class="home_button"><img src="{% static 'assets/images/home.png' %}" class="home_button"></button></a>
+        <a href="{% url 'profile' %}"><button type="button" class="nav_button">
+            YOUR PROFILE</button></a>
+    </div>
+
+
+    <div class="profile_about" style="margin-top: 80px">
+        <script src="{% static 'assets/styles/script.js' %}"></script>
+    
+        <h2 class="profile_heading">USERNAME:</h2>
+        <h3 class="profile_heading" style="color: #1c917a">{{ user.username }}</h3>
+
+        <h2 class="profile_heading">PASSWORD:</h2>
+        <h3 class="profile_heading" style="color:#1c917a">{{ user.password }}</h3>
+        <br>
+        <br>
+        <h2 class="change_pw" id="changePasswordBtn">CHANGE PASSWORD</h2>
+        <form action="{% url 'change_password' %}" style="display:none; background:none; margin-top:-20px;" method="post" id="changePasswordForm">
+            {% csrf_token %}
+            <input type="password" name="password" class="profile_input" placeholder="New password...">
+            <button type="submit" class="nav_button" style="margin-top: -5px">SUBMIT</button>
+        </form>
+
+        <script>
+            document.getElementById("changePasswordBtn").addEventListener("click", function() {
+                var form = document.getElementById("changePasswordForm");
+                if (form.style.display === "none" || form.style.display === "") {
+                    form.style.display = "block";
+                } else {
+                    form.style.display = "none";
+                }
+            });
+        </script>
+
+
+    
+    </div>
+
+
+</body>
+</html>

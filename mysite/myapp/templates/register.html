@@ -14,9 +14,38 @@
     <h4 class="sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
         <a href="{% url 'index' %}"><button type="button" class="page_button">
             <span class="page_icon"></span> BACK </button></a>
-    <div class = 'paragraphs'>
-        <h3 class="sub_name" style="margin-top:30px; margin-bottom:30px; width: 400px;">If you'd like to have a account with us, please email kusmire@bc.edu.</h3>
-        <p class="register_style" style="text-align: center;">Include your full name, organization, reason for account, usage timeline.</p>
-    </div>
+    
+            {% if page == 'login' %}
+            <div class="menu">
+                <form method="POST" action="" style="background:none">
+                    {% csrf_token %}
+                    <label>Username</label>
+                    <input label='login_'type="text" name="username" placeholder="Enter Username" required class="login_values">
+            
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Enter Password" required class="login_values">
+            
+                    <input type="submit" value="Login">
+                </form>
+            
+                <a href="{% url 'register' %}" class="user_buttons">Sign Up</a>
+            
+            </div>
+            
+            {% else %}
+            
+            <div style="margin-top: 50px; color:white; font-size: 14px; width: 800px;">
+                <form method="POST" action="" style="background:none">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" value="Register" class="login_button">
+                </form>
+                
+                <a href="{% url 'login' %}" class="user_buttons" style="margin-top:70px;">Login</a>
+            
+            </div>
+            {% endif %}
+            
+
 </body>
 </html>

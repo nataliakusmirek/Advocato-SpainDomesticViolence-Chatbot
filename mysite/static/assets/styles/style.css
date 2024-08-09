@@ -1,41 +1,3 @@
-.loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.progress-bar {
-    width: 80%;
-    max-width: 400px;
-    height: 20px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.progress {
-    width: 0;
-    height: 100%;
-    background-color: #070D29;
-    animation: fill 4s infinite;
-}
-
-@keyframes fill {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: 100%;
-    }
-}
-
-
-
-
-
-
-
 body {
     background-image: url('../images/indexlook.png');
     background-size: cover; /* Optional, to cover the entire background */
@@ -169,7 +131,7 @@ a {
 .user_buttons::after {
     content: '';
     display: block;
-    width: 100%;
+    width: 100px;
     height: 2px;
     background-color: #12E1B9;
     position: absolute;
@@ -455,8 +417,7 @@ a {
 
 
 .spain_form_body {
-    background-image: url('../images/spain.jpg');
-    background-size: cover; /* Optional, to cover the entire background */
+    background-color: #070D29;
     margin-top: 30px;
     margin-left: 10px;
     padding: 0;
@@ -467,6 +428,39 @@ a {
     opacity: 0;
 }
 
+form {
+    color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 20px;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('../images/spain.jpg');
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(93, 62, 62, 0);
+    margin-bottom: 80px;
+}
+
+/* Form group styling */
+.form-group {
+    background: rgba(126, 246, 232, 0.28);
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+/* Label styling */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Input and select field styling */
+.form-control, .form-select, .form-select, textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #070D29;
+    font-size: 14px;
+    font-family: 'B612';
+}
 .spain_form_project_name {
     font-size: 14px;
     color: #12E1B9;
@@ -480,4 +474,214 @@ a {
     color: #12E1B9;
     letter-spacing: .1rem;
 
+}
+
+.login_values {
+    border-color: #12E1B9;
+    border-radius: 1px;
+    background-color: #18aa8c;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 30px;
+    margin: 10px 10px;
+    font-size: 12px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 270px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+
+}
+
+
+.login_button {
+    border-color: #12E1B9;
+    border-radius: 1px;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 16px;
+    margin: 10px 10px;
+    font-size: 10px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 120px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+
+}
+
+.login_button:hover .icon {
+    transform: rotate(-2deg) translateX(5px); /* Move the icon on hover */
+}
+
+
+.register_button {
+    border-color: #12E1B9;
+    border-radius: 1px;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 16px;
+    margin: 10px 10px;
+    font-size: 10px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 80px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    transition: top 0.3s;
+    margin-top: -30px;
+}
+
+.nav_button {
+    border: none;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 16px;
+    margin: 10px 10px;
+    margin-top: -90px;
+    font-size: 8px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 200px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+
+}
+
+.nav_button::after {
+    content: '';
+    display: block;
+    width: 170px;
+    height: 3px;
+    background-color: #12E1B9;
+    position: absolute;
+    bottom: 0;
+    top: 30px;
+    transform: scaleY(0);
+    transition: transform 0.3s;
+}
+
+.nav_button:hover::after {
+    transform: scaleY(0.5);
+}
+
+.home_button {
+    width: 30px;
+    height: 30px;
+    margin-top: -10px;
+    background: none;
+    border: none;
+}
+
+
+.logout_button {
+    border: 1px solid #12E1B9;
+    background: none;
+    color: #12E1B9;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 10px;
+    transition: color 0.4s, border-color 0.4s;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
+    padding-left: 13px;
+
+    /* Position the button in the top left corner */
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    margin: 20px 20px; 
+}
+
+.logout_button:hover {
+    border-color: #0a8b72;
+    color: #0a8b72;
+}
+
+
+.user_body {
+    background: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'B612';
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+.profile_about {
+    border: 1px solid #12E1B9;
+    background: none;
+    color: #12E1B9;
+    font-size: 14px;
+    width: 280px;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.profile_heading {
+    font-size: 14px;
+    margin: 10px 10px;
+}
+
+.profile_subheading {
+    font-size: 10px;
+    margin: 10px 10px;
+}
+
+.profile_input {
+    border: 1px solid #1c917a;
+    background: none;
+    color: #1c917a;
+    font-size: 10px;
+    font-family: 'B612';
+    margin: 10 10;
+}
+
+.change_pw {
+    border: none;
+    background: none;
+    color: rgb(12, 92, 76);
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 16px;
+    margin: 10px 10px;
+    margin-top: 10px;
+    font-size: 8px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: inline-block; 
+    width: 200px;
+    box-sizing: border-box;
+    letter-spacing: .2rem;
 }

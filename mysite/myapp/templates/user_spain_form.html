@@ -14,10 +14,21 @@
     <h4 class="spain_form_project_sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
         <a href="{% url 'spain_form' %}"><button type="button" class="project_page_button">
             BACK</button></a>
-
+            
+            <h2 class="project_main_text">REPORT DOMESTIC VIOLENCE HERE.</h2>
+            <form action="{% url 'user_spain_form' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="form-errors">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="index_button">SUBMIT</button>
+            </form>
         
-
-
-
 </body>
 </html>

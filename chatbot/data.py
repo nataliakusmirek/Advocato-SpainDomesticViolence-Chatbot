@@ -87,6 +87,7 @@ def build_datasets(definitions, conversations, test_ratio=0.2, val_ratio=0.1):
     val_indices = indices[test_size:test_size + val_size]
     train_indices = indices[test_size + val_size:]
 
+    os.makedirs('dataset', exist_ok=True) # Create the dataset directory if it doesn't exist
     filenames = ['train.enc', 'train.dec', 'val.enc', 'val.dec', 'test.enc', 'test.dec']
     files = []
 
@@ -248,6 +249,28 @@ def filter_long_sequences(tokenized_defs, tokenized_convos, max_length=100):
 
     return filtered_defs, filtered_convos
 
+def create_look_ahead_mask(size):
+    """
+    Creates a look ahead mask for the attention mechanism in the Transformer model.
+    This mask is used to prevent the model from attending to future tokens in the sequence.
+    """
+    mask = 1 - tf.linalg.band_part(tf.ones((size, size)), -1, 0)
+    # Shape is (1, 1, size, size)
+    return mask[tf.newaxis, tf.newaxis, :, :]
+
+def create_padding_mask(seq):
+    """
+    Creates a mask for padding sequences, used to ignore padding in attention layers
+    Args:
+        seq: A sequence of tokens
+    Returns:
+        A tensor with 1s where padding is present and 0s otherwise
+    """
+    if isinstance(seq, dict):
+        seq = seq['encoder_input']
+    seq = tf.cast(tf.math.equal(seq, 0), tf.float32)
+    # Shape is (batch_size, 1, 1, seq_len)
+    return seq[:, tf.newaxis, tf.newaxis, :]
 
 def build_tf_datasets(filtered_defs, filtered_convos, batch_size=64, val_ratio=0.1, test_ratio=0.2):
     """
@@ -277,19 +300,38 @@ def build_tf_datasets(filtered_defs, filtered_convos, batch_size=64, val_ratio=0
     test_defs = np.array(filtered_defs)[test_indices]
     test_convos = np.array(filtered_convos)[test_indices]
 
-    # Create tf.data.Dataset objects (TensorFlow datasets)
-    train_dataset = tf.data.Dataset.from_tensor_slices((train_defs, train_convos))
-    val_dataset = tf.data.Dataset.from_tensor_slices((val_defs, val_convos))
-    test_dataset = tf.data.Dataset.from_tensor_slices((test_defs, test_convos))
+    def create_masks(seq_len):
+        look_ahead_mask = create_look_ahead_mask(seq_len)
+        padding_mask = create_padding_mask(seq_len)
+        return look_ahead_mask, padding_mask
 
-    # Shuffle and batch the datasets
-    train_dataset = train_dataset.shuffle(10000).batch(batch_size)
+    def process_dataset(defs, convos):
+        dataset = tf.data.Dataset.from_tensor_slices((
+            {
+                'encoder_input': defs,
+                'decoder_input': convos[:, :-1]
+            },
+            convos[:, 1:]
+        ))
+
+        dataset = dataset.map(
+            lambda enc_input, dec_input: (
+                {
+                    'encoder_input': enc_input,
+                    'decoder_input': dec_input
+                },
+                dec_input
+            )
+        )
+
+        return dataset
+
+    train_dataset = process_dataset(train_defs, train_convos)
+    val_dataset = process_dataset(val_defs, val_convos)
+    test_dataset = process_dataset(test_defs, test_convos)
+
+    train_dataset = train_dataset.shuffle(10000).batch(batch_size).prefetch(tf.data.AUTOTUNE)
     val_dataset = val_dataset.batch(batch_size)
     test_dataset = test_dataset.batch(batch_size)
 
-
-    train_dataset.save('saved_datasets/training_tf_dataset')
-    val_dataset.save('saved_datasets/validation_tf_dataset')
-    test_dataset.save('saved_datasets/testing_tf_dataset')
-    
     return train_dataset, val_dataset, test_dataset

@@ -4,7 +4,6 @@ import tensorflow as tf
 import numpy as np
 import data
 from model import build_model
-from model import Model
 import os
 import config
 from googletrans import Translator
@@ -74,12 +73,27 @@ def load_data():
                 print("Building TensorFlow dataset...")
                 train_data, val_data, test_data = data.build_tf_datasets(filtered_defs, filtered_convos)
                 print("TensorFlow datasets built and saved in 'datasets' folder")
-        
+
+
+
+                print(f"Train data: {train_data}")
+                print(f"Val data: {val_data}")
+                print(f"Test data: {test_data}")
+
+                if train_data is None or val_data is None or test_data is None:
+                        print("Error: Unable to build TensorFlow datasets.")
+
+
+
+
+
                 print("Data preparation complete.")
                 return train_data, val_data, test_data, tokenizer
     
         except Exception as e:
                 print(f"An error occurred: {e}")
+                return None, None, None, None
+
 
 def loss(y_true, y_pred):
         y_true = tf.reshape(y_true, shape=(-1, config.MAX_LENGTH - 1))
@@ -94,7 +108,6 @@ def accuracy(y_true, y_pred):
        accuracy = tf.metrics.SparseCategoricalAccuracy()(y_true, y_pred)
        return accuracy
 
-
 class Chatbot:
         """
         Chatbot class for the Transformer model.
@@ -106,19 +119,70 @@ class Chatbot:
                 self.optimizer = tf.keras.optimizers.Adam(CustomSchedule(config.D_MODEL))
                 self.model.compile(optimizer=self.optimizer, loss=loss, metrics=[accuracy])
                 self.train_data, self.val_data, self.test_data, self.tokenizer = load_data()
+                
+                if self.train_data is None or self.val_data is None or self.test_data is None or self.tokenizer is None:
+                        raise ValueError("Data loading failed; please check your load_data() function.")
+
+
                 self.translator = Translator()
                 print("Chatbot initialized.")
 
+
         def train(self, epochs=100):
                 print("Starting training...")
-                history = self.model.fit(
-                        [self.train_data[0], self.train_data[1]],  # encoder input and decoder input
-                        self.train_data[2],  # decoder target
-                        epochs=epochs,
-                        validation_data=([self.val_data[0], self.val_data[1]], self.val_data[2])
-                )
-                print("Training complete.")
-                return history
+
+                train_dataset = self.train_data
+
+                for epoch in range(epochs):
+                        epoch_loss = 0
+                        num_batches = 0
+
+                        for batch, (batch_data, batch_targets) in enumerate(train_dataset):
+                                print(f"Batch {batch} data:")
+                                print(f"batch_data type: {type(batch_data)}")
+                                print(f"batch_targets type: {type(batch_targets)}")
+
+                                # Check the types and shapes within batch_data
+                                for key in batch_data:
+                                        print(f"{key} type: {type(batch_data[key])}")
+                                        if isinstance(batch_data[key], dict):
+                                                # Extract tensors from the nested dictionary
+                                                for sub_key in batch_data[key]:
+                                                        tensor = batch_data[key][sub_key]
+                                                        print(f"{key} -> {sub_key} shape: {tf.shape(tensor)}")
+                                        else:
+                                                print(f"{key} shape: {tf.shape(batch_data[key])}")
+
+                                # Proceed with training logic
+                                enc_input = batch_data['encoder_input']['encoder_input']
+                                dec_input = batch_data['decoder_input']
+                                dec_target = batch_targets
+
+                                # Check the shapes
+                                print(f"enc_input shape: {tf.shape(enc_input)}")
+                                print(f"dec_input shape: {tf.shape(dec_input)}")
+                                print(f"dec_target shape: {tf.shape(batch_targets)}")
+
+                                # Create masks
+                                look_ahead_mask = data.create_look_ahead_mask(tf.shape(dec_input)[1])
+                                padding_mask = data.create_padding_mask(enc_input)
+
+                                with tf.GradientTape() as tape:
+                                        predictions = self.model(
+                                                encoder_input=enc_input,
+                                                decoder_input=dec_input,
+                                                training=True,
+                                                look_ahead_mask=look_ahead_mask,
+                                                padding_mask=padding_mask
+                                        )
+                                        loss = loss(dec_target, predictions)
+
+                                gradients = tape.gradient(loss, self.model.trainable_variables)
+                                self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+                                epoch_loss += loss.numpy()
+                                num_batches += 1
+                        print(f'Epoch {epoch + 1}, Loss: {epoch_loss / num_batches}')
+
         
         def evaluate_test(self):
                 print("Evaluating test data...")

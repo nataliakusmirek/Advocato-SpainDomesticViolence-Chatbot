@@ -1,3 +1,4 @@
+<!-- myapp/templates/myapp/index.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,10 +10,33 @@
     <link rel="icon" type="image/x-icon" href='static/assets/images/favicon.png'>
 </head>
 <body>
+    <a href="{% url 'index' %}"><button type="button" class="project_page_button">
+        BACK</button></a>
+    <script src="{% static 'assets/styles/script.js' %}"></script>
     <h1 class="name">ADVOCATO</h1>
     <h4 class="sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
-        <a href="{% url 'index' %}"><button type="button" class="project_page_button">
-            BACK</button></a>
 
+    <div class="menu">
+        {% if page == 'login' %}
+            <form method="POST" action="{% url 'login' %}" style="background:none;">
+                {% csrf_token %}
+                <input type="text" class="login_values" name="username" placeholder="Enter Username" required>
+                <input type="password" class="login_values" name="password" placeholder="Enter Password" required>
+                <button type="submit" class="index_button">Login <span class="icon"></span></button>
+            </form>
+
+            <a href="{% url 'register' %}" style='margin-top:70px;' class="user_buttons">Sign Up</a>
+
+        {% else %}
+            <!-- Register form code (if needed) -->
+            <form method="POST" action="{% url 'register' %}" style='margin-bottom:40px;'>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="user_buttons">Register</button>
+            </form>
+
+            <a href="{% url 'login' %}" class="user_buttons">Login</a>
+        {% endif %}
+    </div>
 </body>
 </html>
