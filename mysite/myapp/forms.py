@@ -2,6 +2,16 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 class SpainForm(forms.Form):
+    """
+    Form for Spain Domestic Violence Form Submission.
+    """
+    # Select language
+    language = forms.ChoiceField(
+        label=_('Select Language'),
+        choices=[('en', 'English'), ('es', 'Spanish')],
+        initial='en',
+        widget=forms.RadioSelect
+    )
     # Victim Information
     name = forms.CharField(label=_('Name'), max_length=100, required=True)
     age = forms.IntegerField(label=_('Age'), required=True)

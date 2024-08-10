@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-09 17:58-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+#: myapp/forms.py:6
+msgid "Name"
+msgstr "Nombre"
+
+#: myapp/forms.py:7
+msgid "Age"
+msgstr "Edad"
+
+#: myapp/forms.py:8
+msgid "Gender"
+msgstr "Género"
+
+#: myapp/forms.py:9
+msgid "Nationality"
+msgstr "Nacionalidad"
+
+#: myapp/forms.py:10
+msgid "Contact Information"
+msgstr "Información de Contacto"
+
+#: myapp/forms.py:13
+msgid "Date of Incident"
+msgstr "Fecha del Incidente"
+
+#: myapp/forms.py:14
+msgid "Location of Incident"
+msgstr "Ubicación del Incidente"
+
+#: myapp/forms.py:15
+msgid "Type of Violence Experienced"
+msgstr "Tipo de Violencia Experimentada"
+
+#: myapp/forms.py:22
+msgid "Description of the Incident"
+msgstr "Descripción del Incidente"
+
+#: myapp/forms.py:23
+msgid "Witnesses (if any)"
+msgstr "Testigos (si los hay)"
+
+#: myapp/forms.py:24
+msgid "Witnesses Contact Information"
+msgstr "Información de Contacto de los Testigos"
+
+#: myapp/forms.py:27
+msgid "Perpetrator Name"
+msgstr "Nombre del Perpetrador"
+
+#: myapp/forms.py:28
+msgid "Relationship to Victim"
+msgstr "Relación con la Víctima"
+
+#: myapp/forms.py:36
+msgid "Perpetrator Age"
+msgstr "Edad del Perpetrador"
+
+#: myapp/forms.py:37
+msgid "Perpetrator Gender"
+msgstr "Género del Perpetrador"
+
+#: myapp/forms.py:40
+msgid "Has the perpetrator been violent before?"
+msgstr "¿Ha sido violento el perpetrador anteriormente?"
+
+#: myapp/forms.py:41
+msgid "If yes, please provide details of previous incidents:"
+msgstr "Si es así, proporcione detalles de incidentes anteriores:"
+
+#: myapp/forms.py:42
+msgid "Has the victim reported these incidents to the authorities before?"
+msgstr "¿Ha informado la víctima sobre estos incidentes a las autoridades anteriormente?"
+
+#: myapp/forms.py:43
+msgid "If yes, what action was taken?"
+msgstr "Si es así, ¿qué acción se tomó?"
+
+#: myapp/forms.py:46
+msgid "Does the perpetrator have access to weapons?"
+msgstr "¿Tiene el perpetrador acceso a armas?"
+
+#: myapp/forms.py:47
+msgid "Has the perpetrator made threats to harm the victim or others?"
+msgstr "¿Ha hecho el perpetrador amenazas para dañar a la víctima u otros?"
+
+#: myapp/forms.py:48
+msgid "Is the victim afraid of the perpetrator?"
+msgstr "¿Tiene miedo la víctima del perpetrador?"
+
+#: myapp/forms.py:49
+msgid "Does the victim have children or dependents?"
+msgstr "¿Tiene la víctima hijos o dependientes?"
+
+#: myapp/forms.py:50
+msgid "Is the victim currently in a safe place?"
+msgstr "¿Está la víctima actualmente en un lugar seguro?"
+
+#: myapp/forms.py:53
+msgid "Does the victim need immediate medical attention?"
+msgstr "¿Necesita la víctima atención médica inmediata?"
+
+#: myapp/forms.py:54
+msgid "Does the victim need assistance with safe housing?"
+msgstr "¿Necesita la víctima asistencia para encontrar un alojamiento seguro?"
+
+#: myapp/forms.py:55
+msgid "Does the victim require legal assistance?"
+msgstr "¿Requiere la víctima asistencia legal?"
+
+#: myapp/forms.py:56
+msgid "Does the victim require counseling?"
+msgstr "¿Requiere la víctima asesoramiento?"
+
+#: myapp/forms.py:57
+msgid "Any other support needed:"
+msgstr "¿Algún otro apoyo necesario:"
+
+#: myapp/forms.py:60
+msgid "Any other information the victim would like to provide:"
+msgstr "¿Alguna otra información que la víctima desee proporcionar:"
+
+#: myapp/forms.py:63
+msgid ""
+"I consent to the information provided being shared with the relevant "
+"authorities and organizations for the purpose of seeking assistance and "
+"support."
+msgstr ""
+"Consiento que la información proporcionada sea compartida con las autoridades "
+"y organizaciones relevantes con el fin de buscar asistencia y apoyo."
+
+#: mysite/settings.py:47
+msgid "English"
+msgstr "Inglés"
+
+#: mysite/settings.py:48
+msgid "Spanish"
+msgstr "Español"

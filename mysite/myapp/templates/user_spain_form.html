@@ -1,34 +1,51 @@
+<!-- user_spain_form.html -->
+
 {% load static %}
+{% load i18n %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{% get_current_language as LANGUAGE_CODE %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'assets/styles/style.css' %}">
-    <title>Advocato</title>
-    <link rel="icon" type="image/x-icon" href='static/assets/images/favicon.png'>
+    <title>{% trans "Advocato" %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/images/favicon.png' %}">
 </head>
 <body class="spain_form_body">
     <script src="{% static 'assets/styles/script.js' %}"></script>
-    <h1 class="spain_form_project_name">ADVOCATO</h1>
-    <h4 class="spain_form_project_sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
-        <a href="{% url 'spain_form' %}"><button type="button" class="project_page_button">
-            BACK</button></a>
-            
-            <h2 class="project_main_text">REPORT DOMESTIC VIOLENCE HERE.</h2>
-            <form action="{% url 'user_spain_form' %}" method="post">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.errors %}
-                            <div class="form-errors">{{ field.errors }}</div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                <button type="submit" class="index_button">SUBMIT</button>
-            </form>
-        
+    <h1 class="spain_form_project_name">{% trans "ADVOCATO" %}</h1>
+    <h4 class="spain_form_project_sub_name">{% trans "WE MAKE RESOURCES FOR MANKIND BETTER." %}</h4>
+    <a href="{% url 'spain_form' %}">
+        <button type="button" class="project_page_button">{% trans "BACK" %}</button>
+    </a>
+    <div class="language-switcher">
+        <a href="{% url 'set_language' %}?language=en" style="text-decoration: none;
+        color: #12E1B9;
+        font-size: 14px; margin-right: 20px;">English</a>
+        <a href="{% url 'set_language' %}?language=es" style="text-decoration: none;
+        color: #12E1B9;
+        font-size: 14px; margin-right: 10px;">Español</a>
+    </div>
+    <h2 class="project_main_text">{% trans "REPORT DOMESTIC VIOLENCE HERE." %}</h2>
+    <form action="{% url 'user_spain_form' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.language.label_tag }}
+            {{ form.language }}
+        </div>
+        {% for field in form %}
+            {% if field.name != 'language' %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="form-errors">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <button type="submit" class="index_button">{% trans "SUBMIT" %}</button>
+    </form>
 </body>
 </html>

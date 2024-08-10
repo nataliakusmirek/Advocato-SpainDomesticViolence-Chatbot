@@ -11,27 +11,22 @@
 <body class="user_body">
     <h1 class="project_name">ADVOCATO</h1>
     <h4 class="project_sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
+    
     <form action="{% url 'logout' %}" method="post" style="background:none; margin-bottom:-30px;">
         {% csrf_token %}
         <button type="submit" class="logout_button">LOGOUT</button>
     </form>
 
     <div class='navbar'>
-        <a href="{% url 'user_dashboard_spain' %}"><button type="button" class="nav_button">
-            FOR SPAIN'S WOMEN </button></a>
-            <a href="{% url 'user_dashboard' %}"><button type="button" class="home_button"><img src="{% static 'assets/images/home.png' %}" class="home_button"></button></a>
-        <a href="{% url 'profile' %}"><button type="button" class="nav_button">
-            YOUR PROFILE</button></a>
+        <button type="button" class="nav_button">FOR SPAIN'S WOMEN</button>
+        <a href="{% url 'user_dashboard' %}">
+            <button type="button" class="home_button">
+                <img src="{% static 'assets/images/home.png' %}" alt="Home" class="home_button">
+            </button>
+        </a>
+        <a href="{% url 'profile' %}">
+            <button type="button" class="nav_button">YOUR PROFILE</button>
+        </a>
     </div>
-
-
-    <div class="project_about">
-        <script src="{% static 'assets/styles/script.js' %}"></script>
-    
-    
-    
-    </div>
-
-
 </body>
 </html>

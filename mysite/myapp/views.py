@@ -1,5 +1,8 @@
+import csv
+import os
+import json
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import redirect
@@ -8,10 +11,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SpainForm
-import csv
-import os
 from django.contrib.auth.decorators import login_required
-
+from django.utils.translation import get_language
+from django.utils import translation
+import logging
+import pandas as pd
 
 # Create your views here.
 def index(request):
@@ -81,8 +85,14 @@ def user_spain_form(request):
         if form.is_valid():
             cleaned_data = form.cleaned_data
             risk_ranking = cleaned_data.get('risk_ranking')  # Use get() to safely retrieve values
+            language = cleaned_data.get('language')
+
+            # Set the language
+            translation.activate(language)
+            request.LANGUAGE_CODE = language
+            
             try:
-                save_form_data_to_csv(cleaned_data, risk_ranking)
+                save_form_data_to_csv(cleaned_data, risk_ranking, language)
                 messages.success(request, 'Your form has been submitted successfully.')
                 return redirect('index')
             except Exception as e:
@@ -94,6 +104,15 @@ def user_spain_form(request):
     else:
         form = SpainForm()    
     return render(request, 'user_spain_form.html', {'form': form})
+
+def set_language(request):
+    user_language = request.GET.get('language', 'en')
+    if user_language:
+        translation.activate(user_language)
+        request.session['django_language'] = user_language
+        messages.success(request, f'Language changed to {user_language}')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 def save_form_data_to_csv(data, risk_ranking):
     file_path = os.path.join(os.path.dirname(__file__), 'spain_form_responses', 'responses.csv')
@@ -112,7 +131,7 @@ def save_form_data_to_csv(data, risk_ranking):
         'previous_incidents_reported', 'action_taken', 'access_to_weapons',
         'threats_made', 'victim_afraid', 'children_dependents', 'safe_place',
         'medical_attention', 'safe_housing', 'legal_help', 'counseling',
-        'other_support', 'additional_information', 'consent', 'risk_ranking'
+        'other_support', 'additional_information', 'consent', 'risk_ranking', 'language'
     ]
 
     try:
@@ -121,6 +140,7 @@ def save_form_data_to_csv(data, risk_ranking):
             if file.tell() == 0:
                 writer.writeheader()
             data['risk_ranking'] = risk_ranking
+            data['language'] = get_language()
             writer.writerow(data)
     except Exception as e:
         messages.error(f'An error occured while saving the form data to the CSV file: {e}')
@@ -147,3 +167,13 @@ def change_password(request):
             messages.error(request, 'Please enter a new password.')
 
     return render(request, 'profile.html')
+
+def search_view(request):
+    query = request.GET.get('query', '').lower()
+    df = pd.read_csv(os.path.join(settings.BASE_DIR, 'myapp', 'spain_form_responses', 'responses.csv'))
+    
+    # Filter rows containing the query string in any column
+    filtered_df = df.apply(lambda row: row.astype(str).str.contains(query).any(), axis=1)
+    filtered_data = df[filtered_df].to_dict(orient='records')
+
+    return JsonResponse(filtered_data, safe=False)

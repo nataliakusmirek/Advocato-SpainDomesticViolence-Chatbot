@@ -1,37 +1,88 @@
 {% load static %}
 <!DOCTYPE html>
-<a lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'assets/styles/style.css' %}">
     <title>Advocato</title>
     <link rel="icon" type="image/x-icon" href="{% static 'assets/images/favicon.png' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="user_body">
-    <a href="{% url 'user_dashboard' %}"></a><h1 class="project_name">ADVOCATO</h1></body></a>
+    <h1 class="project_name">ADVOCATO</h1>
     <h4 class="project_sub_name">WE MAKE RESOURCES FOR MANKIND BETTER.</h4>
+    
     <form action="{% url 'logout' %}" method="post" style="background:none; margin-bottom:-30px;">
         {% csrf_token %}
         <button type="submit" class="logout_button">LOGOUT</button>
     </form>
 
     <div class='navbar'>
-        <button type="button" class="nav_button">
-            FOR SPAIN'S WOMEN </button></a>
-            <a href="{% url 'user_dashboard' %}"><button type="button" class="home_button"><img src="{% static 'assets/images/home.png' %}" class="home_button"></button></a>
-        <a href="{% url 'profile' %}"><button type="button" class="nav_button">
-            YOUR PROFILE</button></a>
+        <button type="button" class="nav_button">FOR SPAIN'S WOMEN</button>
+        <a href="{% url 'user_dashboard' %}">
+            <button type="button" class="home_button">
+                <img src="{% static 'assets/images/home.png' %}" class="home_button">
+            </button>
+        </a>
+        <a href="{% url 'profile' %}">
+            <button type="button" class="nav_button">YOUR PROFILE</button>
+        </a>
     </div>
 
-
-    <div class="project_about">
+    <div class="spain_data_about">
+        <form id="searchForm" onsubmit="return false;" style="background:none; font-family:'B612';">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button type="button" class='login_button' onclick="searchData()">Search</button>
+            <button type="button" class='login_button' onclick="clearSearch()">Clear</button>
+        </form>
+        
+        <div class="table-container">
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date of Incident</th>
+                        <th>Violence Type</th>
+                        <th>Description</th>
+                        <th>Perpetrator</th>
+                        <th>Action Taken</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
         <script src="{% static 'assets/styles/script.js' %}"></script>
-    
-    
-    
     </div>
 
+    <script>
+        async function searchData() {
+            let searchValue = document.getElementById('searchInput').value;
+            let response = await fetch(`/search/?query=${encodeURIComponent(searchValue)}`);
+            let data = await response.json();
+            let tableBody = document.getElementById('resultsBody');
+            tableBody.innerHTML = '';
+            
+            data.forEach(row => {
+                let tr = document.createElement('tr');
+                // Adjust which fields to display here
+                let fields = [row['name'], row['date_of_incident'], row['violence_type'], row['description_of_incident'], row['perpetrator_name'], row['action_taken']];
+                fields.forEach(cell => {
+                    let td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+        }
 
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';  // Clear the input field
+            document.getElementById('resultsBody').innerHTML = '';  // Clear the results table
+        }
+    </script>
 </body>
 </html>
